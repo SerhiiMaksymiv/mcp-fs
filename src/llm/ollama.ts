@@ -1,13 +1,13 @@
-import { InteractiveCLI } from './cli.js';
-import { LLMProvider } from '../types.js';
+import { InteractiveCLI } from './cli.js'
+import { LLMProvider } from '../types.js'
 
 export class OllamaProvider implements LLMProvider {
-  private model: string;
-  private apiUrl: string;
+  private model: string
+  private apiUrl: string
 
   constructor(model = 'qwen3:14b', apiUrl = 'http://localhost:11434') {
-    this.model = model;
-    this.apiUrl = apiUrl;
+    this.model = model
+    this.apiUrl = apiUrl
   }
 
   async generateResponse(prompt: string, context?: any): Promise<string> {
@@ -24,20 +24,21 @@ export class OllamaProvider implements LLMProvider {
           max_tokens: 2000
         }
       })
-    });
+    })
 
     if (!response.ok) {
-      throw new Error(`Ollama API error: ${response.statusText}`);
+      throw new Error(`Ollama API error: ${response.statusText}`)
     }
 
-    const data = await response.json();
-    return data.response;
+    const data = await response.json()
+    return data.response
   }
 
   private buildPrompt(userPrompt: string, context?: any): string {
     let systemPrompt = `
-      You are an expert JavaScript/TypeScript software engineer specializing in backend development, APIs, integration systems, AI models, AI agents, documentation, and DevOps practices.
-      You work with experienced developers and QA professionals who need precise, actionable guidance.
+      You are an expert JavaScript/TypeScript software engineer specializing in backend development,
+      APIs, integration systems, AI models, AI agents, documentation, and DevOps practices.
+      You work with experienced developers and QA professionals who need precise, actionable guidance and concise answers.
       Your expertise covers:
 
       Backend architecture and API design
@@ -66,24 +67,24 @@ export class OllamaProvider implements LLMProvider {
       Assume the user has strong technical knowledge and prefers efficiency over hand-holding.
       You are a helpful AI assistant that can analyze code and answer questions about software projects.
       You have access to detailed information about the user's codebase through various tools.
-    `;
+    `
     
     if (context) {
-      systemPrompt += `\n\nCurrent context:\n${JSON.stringify(context, null, 2)}`;
+      systemPrompt += `\n\nCurrent context:\n${JSON.stringify(context, null, 2)}`
     }
     
-    return `${systemPrompt}\n\nUser: ${userPrompt}\n\nAssistant:`;
+    return `${systemPrompt}\n\nUser: ${userPrompt}\n\nAssistant:`
   }
 }
 
 // Usage examples
 async function main() {
-  const provider = new OllamaProvider(); // or 'llama3.1', 'deepseek-coder', etc.
+  const provider = new OllamaProvider()
   
-  const cli = new InteractiveCLI(provider);
-  await cli.start();
+  const cli = new InteractiveCLI(provider)
+  await cli.start()
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  main().catch(console.error);
+  main().catch(console.error)
 }

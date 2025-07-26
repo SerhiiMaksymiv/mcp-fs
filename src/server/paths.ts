@@ -3,11 +3,11 @@ import os from 'node:os';
 import path from "node:path";
 
 const args = process.argv.slice(2);
+
 if (args.length === 0) {
   console.error("Usage: mcp-server-filesystem <allowed-directory> [additional-directories...]");
   process.exit(1);
 }
-
 
 export function expandHome(filepath: string): string {
   if (filepath.startsWith('~/') || filepath === '~') {
@@ -16,9 +16,7 @@ export function expandHome(filepath: string): string {
   return filepath;
 }
 
-export const allowedDirectories = args.map(dir =>
-  path.normalize(path.resolve(expandHome(dir)))
-);
+export const allowedDirectories = args.map(dir => path.normalize(path.resolve(expandHome(dir))));
 
 // Validate that all directories exist and are accessible
 await Promise.all(args.map(async (dir) => {

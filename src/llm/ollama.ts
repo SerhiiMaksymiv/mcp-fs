@@ -1,11 +1,10 @@
-import { InteractiveCLI } from './cli.js'
 import { LLMProvider } from '../types.js'
 
 export class OllamaProvider implements LLMProvider {
   private model: string
   private apiUrl: string
 
-  constructor(model = 'qwen3:14b', apiUrl = 'http://localhost:11434') {
+  constructor(model = 'qwen3', apiUrl = 'http://localhost:11434') {
     this.model = model
     this.apiUrl = apiUrl
   }
@@ -75,16 +74,4 @@ export class OllamaProvider implements LLMProvider {
     
     return `${systemPrompt}\n\nUser: ${userPrompt}\n\nAssistant:`
   }
-}
-
-// Usage examples
-async function main() {
-  const provider = new OllamaProvider()
-  
-  const cli = new InteractiveCLI(provider)
-  await cli.start()
-}
-
-if (import.meta.url === `file://${process.argv[1]}`) {
-  main().catch(console.error)
 }

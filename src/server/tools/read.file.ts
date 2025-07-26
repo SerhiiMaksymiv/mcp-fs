@@ -8,6 +8,7 @@ export async function readFile(args: any): Promise<ContentResponse> {
   if (!parsed.success) {
     throw new Error(`Invalid arguments for read_file: ${parsed.error}`)
   }
+
   const validPath = await validatePath(parsed.data.path)
   const content = await fs.readFile(validPath, "utf-8")
   return {

@@ -57,7 +57,10 @@ export class LLMCodeAnalyzer {
     const context = {
       file: await this.mcpClient.readFile(filePath)
     };
-    const prompt = "Analyze the file content. Look at file sizes, number of functions, project structure, code style, any errors and provide recommendations for improvement, based on the file content";
+    const prompt = `
+      Analyze the file content.
+      Look at file sizes, number of functions, project structure, code style, any errors and provide recommendations for improvement, based on the file content.
+    `;
     
     return await this.llmProvider.generateResponse(prompt, context);
   }

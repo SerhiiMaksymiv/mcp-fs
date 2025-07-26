@@ -16,7 +16,7 @@ export class MCPCodeClient {
   constructor() {
     this.transport = new StdioClientTransport({
       command: "node",
-      args: ["dist/src/server/server.js", "./dist/"]
+      args: ["dist/src/server/server.js", "."]
     });
 
     this.client = new Client({

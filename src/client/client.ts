@@ -17,7 +17,7 @@ export class MCPCodeClient implements MCPClient {
   constructor() {
     this.transport = new StdioClientTransport({
       command: "node",
-      args: ["dist/src/server/server.js", "."]
+      args: ["dist/src/server/server.js", ".", "~/repos/bg-auto"]
     });
 
     this.client = new Client({

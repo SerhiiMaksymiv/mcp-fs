@@ -48,7 +48,10 @@ export class LLMCodeAnalyzer {
       structure: await this.mcpClient.getProjectStructure()
     };
 
-    const prompt = `Based on this description: "${description}", find similar code patterns or functions in the project and explain how they work.`;
+    const prompt = `
+      Based on this description: "${description}",
+      find similar code patterns or functions in the project and explain how they work.
+    `;
     
     return await this.llmProvider.generateResponse(prompt, context);
   }
@@ -59,7 +62,11 @@ export class LLMCodeAnalyzer {
     };
     const prompt = `
       Analyze the file content.
-      Look at file sizes, number of functions, project structure, code style, any errors and provide recommendations for improvement, based on the file content.
+      Look at file sizes,
+      number of functions,
+      project structure, code style,
+      any errors and provide recommendations for improvement,
+      based on the file content.
     `;
     
     return await this.llmProvider.generateResponse(prompt, context);
@@ -71,7 +78,6 @@ export class LLMCodeAnalyzer {
     }
 
     const prompt = `Get the directory structure of the project`;
-    
     return await this.llmProvider.generateResponse(prompt, context);
   }
 

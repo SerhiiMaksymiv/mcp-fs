@@ -16,7 +16,13 @@ export function expandHome(filepath: string): string {
   return filepath;
 }
 
-export const allowedDirectories = args.map(dir => path.normalize(path.resolve(expandHome(dir))));
+export const allowedDirectories = args.map(dir => {
+  const resolvedPath = path.normalize(path.resolve(expandHome(dir)))
+  console.error('resolvedPath', path.resolve(expandHome(dir)))
+  console.error('dir', dir)
+  console.error('additinal', path.normalize('~/repos/bg-auto'))
+  return resolvedPath
+});
 
 // Validate that all directories exist and are accessible
 await Promise.all(args.map(async (dir) => {

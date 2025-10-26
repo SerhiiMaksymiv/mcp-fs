@@ -14,5 +14,4 @@ export async function writeFile(args: any): Promise<ContentResponse> {
   return {
     content: [{ type: "text", text: `Successfully wrote to ${parsed.data.path}` }],
   }
-
 }

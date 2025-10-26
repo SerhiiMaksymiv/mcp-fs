@@ -17,13 +17,13 @@ export class InteractiveCLI {
     console.log('\n📝 Available commands:');
     console.log('  - ask <question>: Ask any question about your code');
     console.log('  - read file: Read a file and analyze its content');
+    console.log('  - struct: Get the project structure');
     console.log('  - similar <description>: Find similar code patterns');
     console.log('  - exit: Quit the analyzer\n');
 
     const rl = readline.createInterface({ input, output });
 
     const askQuestion = async () => {
-
       try {
         const answer = await rl.question('What would you like to know about your code?\n\t> ');
         const [command, ...args] = answer.trim().split(' ');
@@ -41,18 +41,27 @@ export class InteractiveCLI {
               response = await this.analyzer.findSimilarCode(args.join(' '));
               break;
 
-            case 'exit':
-              console.log('👋 Goodbye!');
-              await this.analyzer.cleanup();
-              rl.close();
-              return;
+            case 'struct':
+              response = await this.analyzer.getStructure();
+              break;
+
+            case 'tree':
+              response = await this.analyzer.getTree(args.join(' '));
+              break;
 
             case 'read':
               response = await this.analyzer.readFile(args.join(' '));
               break;
 
+            case 'exit':
+              console.log('👋 Goodbye!');
+              await this.analyzer.close();
+              process.exit(0)
+
             default:
-              response = await this.analyzer.askQuestion(answer);
+              console.log('👋 Goodbye!');
+              await this.analyzer.close();
+              process.exit(0)
           }
           
           console.log('\n' + '='.repeat(80));
@@ -63,7 +72,7 @@ export class InteractiveCLI {
             console.error('❌ Error:', error.message);
           }
 
-          askQuestion();
+          await askQuestion();
           
       } catch(err) {
         console.log(`Error: `, err);
@@ -72,7 +81,7 @@ export class InteractiveCLI {
       }
     }
 
-    askQuestion();
+    await askQuestion();
   }
 }
 

@@ -13,5 +13,4 @@ export async function searchFile(args: any): Promise<ContentResponse> {
   return {
     content: [{ type: "text", text: results.length > 0 ? results.join("\n") : "No matches found" }],
   }
-
 }

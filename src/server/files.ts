@@ -18,11 +18,7 @@ export async function getFileStats(filePath: string): Promise<FileInfo> {
   };
 }
 
-export async function searchFiles(
-  rootPath: string,
-  pattern: string,
-  excludePatterns: string[] = []
-): Promise<string[]> {
+export async function searchFiles( rootPath: string, pattern: string, excludePatterns: string[] = []): Promise<string[]> {
   const results: string[] = [];
 
   async function search(currentPath: string) {

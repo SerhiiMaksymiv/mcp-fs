@@ -16,5 +16,4 @@ export async function listDirectory(args: any): Promise<ContentResponse> {
   return {
     content: [{ type: "text", text: formatted }],
   }
-
 }

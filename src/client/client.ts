@@ -7,9 +7,10 @@ export interface MCPClient {
   disconnect(): Promise<void>;
   getProjectStructure(): Promise<any>;
   readFile(filePath: string): Promise<any>;
+  getTree(path: string): Promise<any>;
 }
 
-export class MCPCodeClient {
+export class MCPCodeClient implements MCPClient {
   private client: Client;
   private transport: StdioClientTransport;
 
@@ -36,15 +37,28 @@ export class MCPCodeClient {
     await this.client.close();
   }
 
-  async getProjectStructure(path?: string) {
+  async getProjectStructure() {
     try {
       const result = await this.client.request(
-        { method: 'tools/call', params: { name: 'list_directory', arguments: { path } } },
+        { method: 'tools/call', params: { name: 'list_directory', arguments: { path: '.' } } },
         CallToolResultSchema
       );
       return result.content;
     } catch (error) {
       console.error('Error getting project structure:', error);
+      throw error;
+    }
+  }
+
+  async getTree(path: string) {
+    try {
+      const result = await this.client.request(
+        { method: 'tools/call', params: { name: 'tree', arguments: { path } } },
+        CallToolResultSchema
+      );
+      return result.content;
+    } catch (error) {
+      console.error('Error getting file tree:', error);
       throw error;
     }
   }

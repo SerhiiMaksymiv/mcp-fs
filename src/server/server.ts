@@ -42,10 +42,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       case "edit_file": { return editFile(args) }
       case "create_directory": { return createDirectory(args) }
       case "list_directory": { return listDirectory(args) }
-      case "directory_tree": { return directoryTree(args) }
       case "move_file": { return moveFile(args) }
       case "search_files": { return searchFile(args) }
       case "get_file_info": { return fileInformation(args) }
+      case "tree": { return directoryTree(args) }
 
       case "list_allowed_directories": {
         return {

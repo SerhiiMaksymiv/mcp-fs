@@ -35,7 +35,7 @@ export class LLMCodeAnalyzer {
     const lowerQuestion = question.toLowerCase();
     const context: any = {};
 
-    if (lowerQuestion.includes('structure') || lowerQuestion.includes('organization') || lowerQuestion.includes('directory')) {
+    if (lowerQuestion.includes('struct') || lowerQuestion.includes('organization') || lowerQuestion.includes('directory')) {
       const structure = await this.mcpClient.getProjectStructure();
       context.projectStructure = structure;
     }
@@ -65,7 +65,31 @@ export class LLMCodeAnalyzer {
     return await this.llmProvider.generateResponse(prompt, context);
   }
 
-  async cleanup() {
+  async getTree(path: string): Promise<string> {
+    const context = {
+      tree: await this.mcpClient.getTree(path)
+    }
+
+    const prompt = `Get the directory structure of the project`;
+    
+    return await this.llmProvider.generateResponse(prompt, context);
+  }
+
+  async getStructure(): Promise<string> {
+    const context = {
+      structure: await this.mcpClient.getProjectStructure()
+    }
+
+    const prompt = `
+      Analyze the project structure.
+      Look at file sizes, number of functions,
+      and just report the project structure.
+    `;
+    
+    return await this.llmProvider.generateResponse(prompt, context);
+  }
+
+  async close() {
     await this.mcpClient.disconnect();
   }
 }

@@ -53,15 +53,19 @@ export class InteractiveCLI {
               response = await this.analyzer.readFile(args.join(' '));
               break;
 
+            case 'find':
+              const [name, ...context] = args;
+              response = await this.analyzer.findFunctions(name, context.join(' '));
+              break;
+
             case 'exit':
+            case 'ok':
               console.log('👋 Goodbye!');
               await this.analyzer.close();
               process.exit(0)
 
             default:
-              console.log('👋 Goodbye!');
-              await this.analyzer.close();
-              process.exit(0)
+              console.log('Invalid command. Try again.');
           }
           
           console.log('\n' + '='.repeat(80));

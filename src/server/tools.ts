@@ -26,6 +26,16 @@ export const tools = {
     },
 
     {
+      name: "find_functions",
+      description:
+        "Searches for functions in a project directory and returns a list of " +
+        "functions and their corresponding file paths. This tool is useful " +
+        "for understanding the structure and organization of a project. " +
+        "Only works within allowed directories.",
+      inputSchema: zodToJsonSchema(ReadFileArgsSchema),
+    },
+
+    {
       name: "read_multiple_files",
       description:
         "Read the contents of multiple files simultaneously. This is more " +
@@ -61,7 +71,7 @@ export const tools = {
         "nested directories in one operation. If the directory already exists, " +
         "this operation will succeed silently. Perfect for setting up directory " +
         "structures for projects or ensuring required paths exist. Only works within allowed directories.",
-      inputSchema: zodToJsonSchema(CreateDirectoryArgsSchema) 
+      inputSchema: zodToJsonSchema(CreateDirectoryArgsSchema),
     },
 
     {

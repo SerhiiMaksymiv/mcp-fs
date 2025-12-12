@@ -5,6 +5,8 @@ import { FileInfo } from "../types.js";
 import { minimatch } from 'minimatch';
 import { createTwoFilesPatch } from 'diff';
 
+const SUPPORTED_EXTENSIONS = ['.js', '.ts', '.jsx', '.tsx', '.json', '.md'];
+
 export async function getFileStats(filePath: string): Promise<FileInfo> {
   const stats = await fs.stat(filePath);
   return {
@@ -156,4 +158,42 @@ export async function applyFileEdits(
   }
 
   return formattedDiff;
+}
+ 
+
+export async function getProjectFiles(dirPath: string): Promise<FileInfo[]> {
+  const files: FileInfo[] = [];
+  
+  try {
+    const items = await fs.readdir(dirPath, { withFileTypes: true });
+    
+    for (const item of items) {
+      if (item.name.startsWith('.') && item.name !== '.env') continue;
+      
+      const fullPath = path.join(dirPath, item.name);
+      
+      if (item.isDirectory()) {
+        // Skip node_modules and other large directories
+        if (['node_modules', 'dist', 'build', '.git'].includes(item.name)) continue;
+        files.push(...await getProjectFiles(fullPath));
+      } else if (isSupportedFile(item.name)) {
+        const stats = await fs.stat(fullPath);
+        files.push({
+          path: fullPath,
+          name: item.name,
+          size: stats.size,
+          modified: stats.mtime,
+          type: path.extname(item.name)
+        });
+      }
+    }
+  } catch (error) {
+    console.error(`Error reading directory ${dirPath}:`, error);
+  }
+  
+  return files;
+}
+
+export function isSupportedFile(filename: string): boolean {
+  return SUPPORTED_EXTENSIONS.some(ext => filename.endsWith(ext));
 }

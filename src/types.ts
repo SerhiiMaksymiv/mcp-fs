@@ -8,13 +8,16 @@ export interface LLMProvider {
 export type ToolInput = z.infer<typeof ToolInputSchema>;
 
 export interface FileInfo {
-  size: number;
-  created: Date;
-  modified: Date;
-  accessed: Date;
-  isDirectory: boolean;
-  isFile: boolean;
-  permissions: string;
+  path?: string;
+  name?: string;
+  type?: string;
+  size?: number;
+  created?: Date;
+  modified?: Date;
+  accessed?: Date;
+  isDirectory?: boolean;
+  isFile?: boolean;
+  permissions?: string;
 }
 
 export type Content = {
@@ -29,6 +32,6 @@ export type Content = {
 }
 
 export type ContentResponse = {
-  content: Array<{ type: string; text: string }>
+  content: Array<{ type: string; text: string; content?: any }>
   isError?: boolean
 }

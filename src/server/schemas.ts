@@ -54,3 +54,7 @@ export const GetFileInfoArgsSchema = z.object({
 
 export const ToolInputSchema = ToolSchema.shape.inputSchema;
 
+export const ToolsListArgsSchema = z.object({
+  path: z.string(),
+});
+

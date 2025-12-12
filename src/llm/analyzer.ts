@@ -78,7 +78,17 @@ export class LLMCodeAnalyzer {
     }
 
     const prompt = `Get the directory structure of the project`;
-    return await this.llmProvider.generateResponse(prompt, context);
+    return this.llmProvider.generateResponse(prompt, context);
+  }
+
+  async findFunctions(path: string, ctx: string): Promise<string> {
+    const context = {
+      functions: await this.mcpClient.findFunctions(path, ctx)
+    }
+    const prompt = `
+      Find functions in the project that match described context: ${ctx}
+    `;
+    return this.llmProvider.generateResponse(prompt, context);
   }
 
   async getStructure(): Promise<string> {
@@ -92,7 +102,7 @@ export class LLMCodeAnalyzer {
       and just report the project structure.
     `;
     
-    return await this.llmProvider.generateResponse(prompt, context);
+    return this.llmProvider.generateResponse(prompt, context);
   }
 
   async close() {

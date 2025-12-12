@@ -63,6 +63,19 @@ export class MCPCodeClient implements MCPClient {
     }
   }
 
+  async findFunctions(path: string, context: any) {
+    try {
+      const result = await this.client.request(
+        { method: 'tools/call', params: { name: 'find_functions', arguments: { path, context } } },
+        CallToolResultSchema
+      );
+      return result.content;
+    } catch (error) {
+      console.error('Error finding functions:', error);
+      throw error;
+    }
+  }
+
   async readFile(path: string) {
     try {
       const result = await this.client.request(
